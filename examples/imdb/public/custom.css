@@ -1,0 +1,194 @@
+﻿/* result main */
+.results {
+    font-size: 12px;
+    line-height: 21px;
+    margin-bottom: 6px;
+}
+
+h3 {
+    font-size: 14px;
+    display: inline;
+}
+
+.result a {
+    text-decoration: none;
+}
+
+.result a:hover {
+    text-decoration: underline;
+}
+/* result main */
+
+/* result custom */
+.result div.cover {
+    float: left;
+    width: 115px;
+    text-align: center;
+    padding-right: 7px;
+    position: relative;
+}
+
+ul.more_info, ul.director, ul.writer, ul.actor, ul.company {
+    display: inline;
+}
+
+.user_rating img {
+    position: relative;
+    top: 2px;
+}
+
+.certification a {
+    color: #2F4F4F;
+}
+
+.plot {
+    font-style: italic;
+}
+
+ul.recommendations {
+    margin-top: 3px;
+    font-size: 13px;
+    position: relative;
+    bottom: 0px;
+    clear: both;
+}
+
+.recommendations .first {
+    padding-left: 20px;
+    background: url(/img/smiley.png) no-repeat left;        
+}
+
+.recommendations a {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.recommendations .more a {
+    color: gray;
+    background: url("/img/direction--arrow.png") no-repeat left;
+    padding-left: 19px;
+}
+
+ul.keyword {
+    clear: both;
+    font-style: italic;
+}
+/* result custom */
+
+/* actions */
+.actions {
+    clear: both;
+    bottom: 0px;
+    margin-top: 3px;
+}
+
+.actions a {
+    color: gray;
+    padding-left: 20px;
+    padding-top: 2px;
+}
+
+.actions a.source {
+    padding-top: 0px;
+    background: url(/img/book_open.png) no-repeat left;    
+}
+
+.actions a.photos {
+    background: url(/img/photos.png) no-repeat left;    
+}
+
+.actions a.trailer {
+    background: url(/img/film.png) no-repeat left;    
+}
+
+.actions a.torrent {
+    background: url(/img/lightning.png) no-repeat left;    
+}
+/* actions */
+
+/* similarity search feature */
+.get_similar {
+    position: absolute;
+    top: 10px;
+    right: 4px;
+    clear: both;    /* IE */
+}
+
+.sim_scores li a{
+    background: #FEFFBF;
+}
+
+.sim_scores .first {
+    padding-left: 20px;
+    padding-top: 1px;
+    background: url(/img/thumb-up.png) no-repeat left;    
+}
+/* similarity search feature */
+
+/* similar */
+.actions .similar {
+    background: url(/img/thumb-up.png) no-repeat left;
+}
+
+.search_keywords .similar a {
+    color: black;
+}
+
+.search_keywords .similar .term img {
+    font-style: italic;
+    top: 0px;
+}
+
+.search_keywords .disabled a {
+    color: gray;
+}
+
+.search_keywords li.disabled {
+    background: #EFEFEF;
+    border: 1px dotted #CFCFCF;
+}
+/* similar */
+
+/* button 
+    http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html 
+*/
+.clear { /* generic container (i.e. div) for floating buttons */
+    overflow: hidden;
+    width: 100%;
+}
+
+a.button {
+    background: transparent url('http://www.oscaralexander.com/tutorials/img/bg_button_a.gif') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('http://www.oscaralexander.com/tutorials/img/bg_button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+}
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; /* push text down 1px */
+}
+
+.result a.button:hover {
+    text-decoration: none;
+}
+/* button */

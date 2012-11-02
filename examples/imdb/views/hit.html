@@ -1,0 +1,150 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+
+$def show_stars(vote, max_count=10, small_icons=False):
+    $ star = small_icons and 'star-small' or 'star'
+
+    $ vote = float(vote) * max_count
+    $for i in range(1, max_count+1):
+        $if vote >= i:
+            <img src="/img/star/$(star).png" alt="X" title="$vote/$max_count" />\
+        $elif vote >= i - 0.5:
+            <img src="/img/star/$(star)-half.png" alt=">" title="$vote/$max_count" />\
+        $else:
+            <img src="/img/star/$(star)-empty.png" alt="_" title="$vote/$max_count" />\
+    \
+
+$if hit.cover_url:
+    $ url = generate_md5(hit.cover_url)
+    <div class="cover">
+        <img src="http://imdb.cloudmining.net/public/covers/$url[:2]/$url/">
+    </div>
+
+<h3>$hit.title</h3>
+
+$if hit.year:
+    (<span class="year"><a href="$urlquote_plus('/search/year=%s/' % hit.year)">$hit.year</a></span>)
+
+<ul class="more_info">
+    $ h = []
+    $if hit.type_other: $h.append('<li>Video</li>')
+    $if hit.type_tv_serie: $h.append('<li>TV Series</li>')
+    $if hit.runtime: $h.append('<li>%s min</li>' % hit.runtime)
+    $if hit.certification:
+
+        $h.append('<li class="certification"><a href="%s">Rated %s</a>' % (changequery(q='(@certification %s)' % hit.certification, s=None), hit.certification))
+    $if h:
+         - $:(' - '.join(h))
+</ul>
+
+$if hit.user_rating:
+    <div class="user_rating">
+        $:show_stars(hit.user_rating, small_icons=False)
+        $#($commify(hit.nb_votes) votes)
+        ($(hit.user_rating*10)/10 - $commify(hit.nb_votes) IMDb votes)
+        $#<em>$(hit.user_rating*10)/10</em> ($commify(hit.nb_votes) votes)
+    </div>
+
+$if hit.genre:
+    <ul class="genre">
+    <li>Genre: </li>
+    $for g in hit.genre:
+        <li><a href="$urlquote_plus('/search/genre=%s/' % g)">$g</a>
+        $if not loop.last: /
+        </li>
+    </ul>
+
+$if hit.director:
+    <ul class="director">
+    <li>Directed by </li>
+    $for d in hit.director:
+        <li><a href="$urlquote_plus('/search/director=%s/' % d)">$d</a>\
+        $if not loop.last: ,
+        $#$else: .
+        </li>
+    </ul>
+
+$if hit.get('writer'):
+    <ul class="writer">
+    <li>written by </li>
+    $for w in hit.writer:
+        <li><a href="$urlquote_plus('/search/writer=%s/' % w)">$w</a>\
+        $if not loop.last: ,
+        $#$else: .
+        </li>
+    </ul>
+
+$if hit.actor:
+    $ actors = hit.actor
+    <ul class="actor">
+    <li>with </li>
+    $for a in actors[:3]:
+        <li>
+        <a href="$urlquote_plus('/search/actor=%s/' % a)">$a</a>\
+        $if not loop.last: ,
+        </li>\
+    $if len(actors) > 2:
+        <li class="toggle_more" title="$(', '.join(actors[3:]))"></li>\
+        <span class="more_less">,
+        $for a in actors[3:]:
+            <li>
+            <a href="$urlquote_plus('/search/actor=%s/' % a)">$a</a>\
+            $if not loop.last: ,
+            </li>
+        <span class="toggle_less" title="less actors"></a>
+    </ul>
+
+$if hit.get('companies'):
+    <ul class="company">
+    <li>&nbsp;produced by </li>
+    $for company in hit.companies.split('@#@'):
+        <li><a href="$urlquote_plus('/search/company=%s/' % company)">$company</a>\
+        $if not loop.last: ,\
+        $else: .
+        </li>
+    </ul>
+
+$if hit.plot:
+    <p class="plot">$hit.plot.strip('|') <a href="http://www.imdb.com/title/tt$hit.id/plotsummary">full story on IMDb</a></p>
+
+$if hit.keyword:
+    $if match['attrs'].get('@sim_scores') and match['attrs']['@sim_scores']['scores'][0][1] > 0:
+        <ul class="keyword sim_scores">
+        $ keywords = [v[0] for v in match['attrs']['@sim_scores']['scores'] if v[1] > 0]
+        <li class="first"></li>
+    $else:
+        <ul class="keyword">
+        $ keywords = hit.keyword
+
+    $for k in keywords[0:5]:
+        <li><a href="$urlquote_plus('/search/keyword=%s/' % k)">$k</a>
+        $if not loop.last: /
+        </li>
+    </ul>
+
+$#$if hit.recommendations:
+$#    <ul class="recommendations">
+$#        <li class="first"> like </li>
+$#        $ q_more = ''
+$#        $for rec in hit.recommendations.split('@#@')[0:3]:
+$#            $ title_name, imdb_rec_id, user_rating = rec.split('---')
+$#            $#$ q_more += ' (@similar %s title--%s)' % (imdb_rec_id, title_name)
+$#            <li><a href="/search?q=$urlquote('(@title \"%s\")' % title_name)">$title_name</a>
+$#                <span>$:show_stars(user_rating, max_count=5, small_icons=True)</span>
+$#                $if not loop.last: -
+$#            </li>
+$#        $#<li class="more">
+$#        $#    <a href="$changequery(q=q_more.strip(), s=None)" title="View all recommendations">...</a>
+$#        $#</li>
+$#    </ul>
+
+<div class="actions">
+    <a class="source"href="http://www.imdb.com/title/tt$hit.id/">Go to IMDb</a>
+    $if hit.gallery_url: - <a class="photos" href="http://www.imdb.com$hit.gallery_url/">See some photos</a>
+    $if hit.trailer_url: - <a class="trailer" href="http://www.imdb.com$hit.trailer_url/">Watch a trailer</a>
+    - <a class="torrent" href="http://www.btscene.eu/verified-search/torrent/$urlquote_plus('%s %s' % (hit.title.lower(), hit.year))/">Torrent search</a>
+</div>
+
+$if config.sim_cl:
+    $:view.get_similar(match, query)

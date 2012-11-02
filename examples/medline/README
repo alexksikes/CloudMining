@@ -1,0 +1,5 @@
+To run on all the 20M documents, we had to perform a couple of optimizations.
+First of all the data was indexed by order of number of citations of each
+document. Then a cutoff is chosen to stop procesing results. The natural order
+of the index is used and therefore no sorting is taking place. The results are
+simply returned naturally ordered by number of citations.

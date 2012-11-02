@@ -1,0 +1,20 @@
+$ other_instances = ('DBLP', 'CompSci', 'http://dblp.cloudmining.net', 'IMDb', 'movies', 'http://imdb.cloudmining.net', 'MEDLINE', 'biomedical', 'http://medline.cloudmining.net')
+
+<div class="header">
+<div class="info">
+    <ul>
+    <li><a href="https://github.com/alexksikes/cloudmining">About</a></li>
+    <li><a href="mailto:alex.ksikes@gmail.com?subject=$config.instance_name - CloudMining">Feedback</a></li>
+    $if config.expose:
+        <li><a href="/directory/">Directory</a></li>
+    <li class="last">
+        <select class="other_instances">
+        <option value="">Try other instances:</option>
+        $for name, desc, url in group(other_instances, 3):
+            $if name != config.instance_name:
+                <option value="$url">$name - $desc</option>
+        </select>
+    </li>
+    </ul>
+</div>
+</div>

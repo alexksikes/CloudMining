@@ -1,0 +1,35 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+
+$def show_authors():
+    $for author in hit.authors:
+        $if loop.index == 6: <span class="toggle_more">...</span><span class="more_less">
+        <a href="/search$urlquote_plus('/author=%s/' % author)">$:author</a>$cond(not loop.last, ', ', '')
+        $if loop.last and loop.index >= 6: <span class="toggle_less">&nbsp</span></span>
+
+<div class="hit_content">
+<span class="author">$:show_authors()</span>: $hit.title
+<span class="venue"><a href="/search$urlquote_plus('/venue=%s/' % hit.source_id)">$hit.source
+$if hit.source and not hit.source_id.lower() == hit.source.lower():
+    ($hit.source_id.upper())\
+</a></span>
+$if hit.volume:
+    $hit.volume<span>($hit.number)</span>:$hit.pages (<span class="year"><a href="/search$urlquote_plus('/year=%s/' % hit.year)">$hit.year</a></span>)
+$else:
+    <span class="year"><a href="/search$urlquote_plus('/year=%s/' % hit.year)">$hit.year</a></span>
+</span>
+</div>
+
+<div class="actions">
+$if hit.ee:
+    <a class="ee" href="$hit.ee">Read article</a>
+$if hit.citation_counts:
+    $if hit.ee: -
+    <a class="citation" href="http://citeseerx.ist.psu.edu/viewdoc/summary?cid=$hit.cid">Cited $hit.citation_counts times</a>
+$if config.sim_cl and (hit.ee or hit.citation_counts):
+    -&nbsp;
+</div>
+
+$if config.sim_cl:
+    $:view.get_similar(match, query)

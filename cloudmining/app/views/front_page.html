@@ -1,0 +1,41 @@
+$def with (facets, user_pref)
+
+$var title = 'Cloud Mining - ' + config.instance_name
+$var mode = 'front_page'
+
+<!-- We need to wrap with position: relative due to a bug in Rose Chart -->
+<div class="content">
+<h1>
+    <a href="/"><img src="/img/logo-medium.png" alt="Cloud Mining - DBLP">
+    <span>$config.instance_name</span>
+    </a>
+</h1>
+
+<div class="search_form">
+<form method="get" action="/search">
+    <div class="search_entry">
+        <input type="text" name="q" autocomplete="off">
+    </div>
+    <input type="submit" value="search" class="submit">
+</form>
+</div>
+
+<div class="explanation">
+    $:config.description
+</div>
+
+$ facets = sort_facets(facets, config.ui_facets)
+
+<div class="facets">
+<div class="col_left">
+$for facet in facets:
+    $if loop.odd:
+        $:view.facets.layout(facet, user_pref, animate=True)
+</div>
+<div class="col_right">
+$for facet in facets:
+    $if loop.even:
+        $:view.facets.layout(facet, user_pref, animate=True)
+</div>
+</div>
+</div>

@@ -1,0 +1,30 @@
+$def with (match, query)
+
+$ id_field = config.ui_default_hit.id_field
+
+$def show_sim_scores(sc):
+    <div class="debug">
+    <strong>Similarity Search</strong> - Total Score: $('%.2f' % sc['total_score'])
+    <ul>
+    $for f, v in sc['scores']:
+        <li>$f: $('%.2f' % v)</li>
+        $if not loop.last: /
+    </ul>
+    </div>
+
+<div class="debug">
+    <strong>Text Search</strong> - Total Score: $match['attrs'].get('@expr', match['weight'])
+    <ul>
+    $for a in [id_field, 'weight']:
+        <li>$a: $match[a] / </li>
+
+    $ attrs = []
+    $for a in attrs:
+        <li>$a: $match['attrs'][a]
+        $if not loop.last: /
+        </li>
+    </ul>
+</div>
+
+$if match['attrs'].get('@sim_scores'):
+    $:show_sim_scores(match['attrs']['@sim_scores'])

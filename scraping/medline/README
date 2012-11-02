@@ -1,0 +1,9 @@
+Downloading MEDLINE
+
+Tools provided by Pubmed requires previous knowledge of PMIDs or is limited to available record set.
+http://eutils.ncbi.nlm.nih.gov/corehtml/query/static/eutils_help.html
+
+We just went ahead and do a search on Pubmed (http://www.ncbi.nlm.nih.gov/pubmed) limited to English language articles.
+We set the view to MEDLINE, number of results to 200 and ordered by date. We get about 15M documents.
+We use urlparms to transform POST to GET, then we do a first post to get the session cookie then mass download all urls
+from page 1 till the last page. We're done.

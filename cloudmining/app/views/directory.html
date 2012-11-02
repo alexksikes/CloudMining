@@ -1,0 +1,67 @@
+$def with (directories, dir)
+
+$ breadcrumb = dir.get_breadcrumb()
+$var title = 'DBLP - %s - %s' % (dir.name.title(), ' > '.join('%s -- %s'% (a.value, b.value) for a, b in breadcrumb))
+$var mode = 'directory'
+
+$def show_breadcrumb():
+    <ul class="breadcrumb $dir.name">
+    <li class="first"><a href="/directory/$dir.name">$dir.name.upper()</a></li>
+    $ path = '/directory/%s' % dir.name
+    $for f, l in breadcrumb:
+        $ path += '/%s-%s' % (f.id, l.id)
+        <li>
+        $if loop.last:
+            <span class="selected">$f.value ... $l.value</span>
+        $else:
+            <a href="$path">$f.value -- $l.value</a>
+        </li>
+    </ul>    
+
+<div class="content">
+
+<div class="search_bar">
+<h1>
+    <a href="/"><img src="/img/logo-small.png" alt="Cloud Mining - DBLP"/>
+    <span>$settings.instance_name</span>
+    </a>
+</h1>
+<div class="search_form">    
+<form method="get" action="/search/" name="search_form">
+    <input type="hidden" name="search_mode" value="all_items"/>
+    <div class="search_entry">
+        <input type="text" name="q" value="" autocomplete="off"/>
+    </div>
+    <input type="submit" value="GO" class="submit"/>
+</form>
+</div>
+</div>
+
+<div class="search_keywords">
+<p><strong>Browse Directory</strong> (mostly used by Google to index all terms ...). Go back to <a href="/">search</a>.</p>
+$if breadcrumb:
+    $:show_breadcrumb()
+</div>
+
+<ul class="tab">
+$for d in directories:
+    <li class="$d['name'] $cond(d['name'] == dir.name, 'selected', '')"><a href="/directory/$d['name']">$d['name']</a>
+</ul>
+
+<div class="results">
+<ul>
+$if dir.is_listing_entries():
+    $for e in dir:
+        <li class="result $loop.parity $cond(loop.last, 'last', '')">
+        <a href="/search$urlquote_plus('/%s=%s/' % (dir.name, e.value))">$e.value</a>
+        </li>
+$else:
+    $for e in dir:
+        $ f, l = e[0], e[-1]
+        <li class="result $loop.parity $cond(loop.last, 'last', '')">
+        <a href="$urlquote(dir.extend_path('/directory/'+dir.name, f.id, l.id))">$f.value ... $l.value</a>
+        </li>
+</ul>
+</div>
+
+</div>

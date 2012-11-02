@@ -1,0 +1,54 @@
+/* result main */
+.results {
+    /*font-size: 14px;*/
+    font-size: 13px;
+    line-height: 21px;
+    margin-bottom: 6px;
+}
+
+h3 {
+    font-size: 14px;
+    display: inline;
+}
+
+.result a {
+    text-decoration: none;
+}
+
+.result a:hover {
+    text-decoration: underline;
+}
+
+.result .author a {
+    text-decoration: underline;
+}
+/* result main */
+
+/* actions */
+.result .actions {
+    clear: both;
+    float: left;
+}
+
+.actions .ee {
+    background: url("/img/book_open.png") no-repeat scroll left center transparent;
+}
+
+.actions .citation {
+    background: url("/img/star/star.png") no-repeat scroll left center transparent;
+    padding-top: 2px;
+}
+
+.result .actions_similar {
+    clear: none;
+    float: left;
+}
+/* actions */
+
+.result .why_similar {
+    clear: both;
+}
+
+.facet.venue a, .search_keywords .venue {
+    text-transform: uppercase;
+}

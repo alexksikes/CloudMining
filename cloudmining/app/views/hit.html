@@ -1,0 +1,49 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+$ id_field = config.ui_default_hit.id_field
+$ title_field = config.ui_default_hit.title_field
+
+$def show_search_link(search_field, value):
+    <a href="/search/$urlquote_plus('%s=%s/' % (search_field, value))">$value</a>
+
+$def show_hit_value(value, field, use_class='', link=False):
+    $if not value:
+        $return
+    $ _class = cond(use_class, 'class="%s"' % use_class, '')
+    $if isinstance(value, list):
+        <ul $:_class><em>$field</em>:
+        $for v in value[:4]:
+            <li>
+                $:cond(link, show_search_link(field, v), v)
+                $if not loop.last: -
+            </li>
+        $if len(value) > 3:
+            <li class="toggle_more" title="$(', '.join(value[4:]))"></li>\
+            <span class="more_less">-
+            $for v in value[4:]:
+                <li>
+                $:cond(link, show_search_link(field, v), v)
+                $if not loop.last: -
+                </li>
+            <span class="toggle_less" title="less"></a>
+        </ul>
+    $else:
+        <p $:_class><em>$field</em>:
+            $:cond(link, show_search_link(field, value), value)
+        </p>
+
+$if hit.get(title_field):
+    <h3>$hit[title_field]</h3>
+
+$ ffm = config.ui_default_hit.facet_field_mapping
+$for field in config.ui_default_hit.fields_shown:
+    $if field in ffm:
+        $if ffm[field] in hit:
+            $:show_hit_value(hit[ffm[field]], field, use_class=field, link=True)
+    $else:
+        if field in hit:
+            $:show_hit_value(hit[field], field)
+
+$if config.sim_cl:
+    $:view.get_similar(match, query)

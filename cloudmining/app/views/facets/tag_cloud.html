@@ -1,0 +1,16 @@
+$def with (facet, **kwargs)
+
+$var name = facet.name
+
+<ul class="tag_cloud">
+$ sizes = normalize([v['@groupfunc'] for v in facet if not v['@selected']], start=100, end=200)
+$for v, size in zip((v for v in facet if not v['@selected']), sizes):
+    $ q = facet.query + '(@%s %s)' % (facet.name, v['@term'])
+    $#<li style="font-size: $size%"><a href="/search?$urlencode(q)">$v['@term']</a></li>
+    <li style="font-size: $int(size)%"><a href="/search/$q.ToPrettyUrl()">$v['@term']</a></li>
+</ul>
+
+$if kwargs.get('animate'):        
+    <script>
+        \$('.$facet.name .container .tag_cloud li').each(function () {\$(this).hide().show(1500)})
+    </script>

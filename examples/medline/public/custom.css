@@ -1,0 +1,95 @@
+/* result main */
+.results {
+    font-size: 14px;
+    line-height: 21px;
+}
+
+h3 {
+    font-size: 14px;
+    display: inline;
+}
+
+.result a {
+    text-decoration: none;
+}
+
+.result a:hover {
+    text-decoration: underline;
+}
+/* result main */
+
+/* actions */
+.actions {
+    clear: both;
+    bottom: 0px;
+    margin-top: 3px;
+}
+
+.actions a {
+    color: gray;
+    padding-left: 20px;
+    padding-top: 2px;
+}
+
+.actions .book {
+    background:transparent url(/public/book_open.png) no-repeat scroll left center;
+}
+
+.actions .cited {
+    background:transparent url(/img/star/star.png) no-repeat scroll left center;
+}
+
+.actions .fft {
+    background:transparent url(/public/page.png) no-repeat scroll left center;
+}
+/* actions */
+.result .author {
+    display: inline;
+}
+
+.result .author a {
+    text-decoration: underline;
+}
+
+.result .mesh a:hover {
+    text-decoration: underline;
+}
+
+.result ul.mesh {
+    font-size: 11px;
+    margin: 3px 0px;
+    overflow: auto;
+    display: inline;
+}
+
+.result .mesh  li {
+    /*border: 1px dotted gray;*/
+    background: #EFEFEF;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    margin-top: 3px;
+    padding: 0 3px;
+}
+
+.actions a.book {
+    padding-top: 0px;
+}
+
+.actions {
+    position: relative;
+    top: 9px;
+    margin: 0px;
+}
+
+.result .mesh li.toggle_more {
+    border: none;
+    background: url(/img/toggle.png) no-repeat left;
+    padding-left: 21px;
+}
+
+.result .mesh li.toggle_less {
+    padding: 0px;
+    padding-right: 20px;
+    background: url(/img/toggle-collapse.png) no-repeat right;
+}

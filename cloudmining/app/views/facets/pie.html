@@ -1,0 +1,9 @@
+$def with (facet)
+
+$ facet_json = json_encode(facet.results)
+<div class="pie">
+
+</div>
+<script>
+    drawPie(\$('.$facet.name .pie')[0], $:facet_json);
+</script>

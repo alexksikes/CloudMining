@@ -1,0 +1,17 @@
+$def with (facet, **kwargs)
+
+$ canvas_id = facet.name + '_rose'
+<canvas id="$canvas_id" style="display: block; margin:7px auto;" width="330px" height="300px">[No canvas support]</canvas>
+
+$for v in facet:
+    $ v['@url'] = (facet.query + '(@%s %s)' % (facet.name, v['@term'])).ToPrettyUrl()
+
+$ facet_json = json_encode(facet.results)
+$ opts = json_encode(kwargs)
+<script>
+\$(document).ready(function () {
+    var color = \$('.$facet.name h4 strong').css('color');
+    var facet_name = "$facet.name";
+    drawRose(\$('#$canvas_id')[0], $:facet_json, color, facet_name, $:opts);
+})
+</script>

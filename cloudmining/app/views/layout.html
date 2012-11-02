@@ -1,0 +1,39 @@
+﻿$def with (page)
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>$page.get('title')</title>
+
+<meta charset="utf-8">
+<link rel="shortcut icon" href="/img/favicon.png">
+
+<link rel="stylesheet" href="/css/defaults.css">
+$if config.default_coloring:
+    $:view.css_colors()
+$for f in config.stylesheets:
+    <link rel="stylesheet" href="$f">
+
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+<script src='/js/jqplugins/jquery.cookie.js'></script>
+<script src='/js/jqplugins/jquery.myhighlight-3.min.js'></script>
+$for f in config.javascripts:
+    <script src="$f"></script>
+</head>
+
+$ mode = page.get('mode')
+
+<body class="$mode">
+
+$:view.header()
+
+$:page
+
+$if page.get('mode') == 'front_page':
+    <div class="footer">
+    <span>Automatically built with <a href="https://github.com/alexksikes/cloudmining">Cloud Mining</a></span>
+    </div>
+
+</body>
+<script src="/js/main.js"></script>
+</html>

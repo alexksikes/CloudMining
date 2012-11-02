@@ -1,0 +1,27 @@
+$def with (facet, **kwargs)
+
+<ul class="counts">
+$ max_ = max(v['@count'] for v in facet)
+
+$for v in sorted(facet, key=lambda x: -x['@count']):
+    $# q = dict(q=('%s (@%s %s)' % (query_param('q', ''), facet.name, v['@term'])).strip())
+    $# should be facet.user_search_field??
+    $ q = facet.query + '(@%s %s)' % (facet.name, v['@term'])
+
+    $ size = int( 100 * (1.0*v['@count'] / max_ ) )
+    $if loop.index == 9: <li class="toggle_more">show more</li><span class="more_less">
+    <li $cond(loop.first, 'class=first', '')>
+        <div class="bar_chart" style="width:$size%"></div>
+        $#<a href="/search?q=$urlquote(q)">$v['@term'] <span class="count">$v['@count']</span></a>
+        <a href="/search/$q.ToPrettyUrl()">$v['@term'] <span class="count">$commify(v['@count'])</span></a>
+    </li>
+
+    $if loop.last and loop.index >= 9: <li class="toggle_less">show less</li></span>
+</ul>
+
+$if kwargs.get('animate'):
+    <script>
+        /*addMoreLess();*/
+        var bars = \$('.$facet.name .container .bar_chart');
+        bars.each(function() { \$(this).hide().animate({width:'toggle'}, 1500) });
+    </script>

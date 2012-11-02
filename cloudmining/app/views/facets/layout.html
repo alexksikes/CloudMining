@@ -1,0 +1,23 @@
+$def with (facet, user_pref, **kwargs)
+
+$ ui_facet = config.ui_facets_dict[facet.name]
+
+$def show_facet_change_visu(facet, selected_visu):
+    <select name="facet_view">
+    $for visu_type in ui_facet.available_visualizations:
+        $ mode = config.visu[visu_type].name
+        $ name = config.visu[visu_type].description
+        <option value="$mode" $cond(selected_visu == mode, 'selected="selected"', '')>$name</option>
+    </select>
+
+$ selected_visu = user_pref['selected_visu'].get(facet.name, 'tag_cloud')
+$ collapsed = cond(user_pref['collapsed'].get(facet.name) == True, 'collapsed', '')
+
+<div class="facet $facet.name $collapsed">
+    <h4>Refine by <strong>$ui_facet['description']</strong>:</h4>
+    <div class="select_view">show: $:show_facet_change_visu(facet, selected_visu)</div>
+    <div class="container">
+    $if facet.results.total_found:
+        $:config.visu[selected_visu].render(facet, animate=False)
+    </div>
+</div>

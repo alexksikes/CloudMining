@@ -1,0 +1,72 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+
+$if hit.authors:
+    $ authors = hit.authors
+    <ul class="author">
+    $for a in authors[:5]:
+        $ a = fix_author_initials(a)
+        <li><a href="$urlquote_plus('/search/author=%s/' % a)">$a</a>\
+        $if not loop.last: ,
+        </li>\
+    $if len(authors) > 5:
+        <li class="toggle_more" title="$(', '.join(authors[5:]))"></li>\
+        <span class="more_less" id="expandee$hit.pmid">,
+        $for a in authors[5:]:
+            $ a = fix_author_initials(a)
+            <li>
+            <a href="$urlquote_plus('/search/author=%s/' % a)">$a</a>\
+            $if not loop.last: ,
+            </li>
+        <li class="toggle_less" title="less authors"></li>
+    </ul>\
+    :
+$if hit.title:
+    $rstrips(hit.title, '.').
+$elif hit.book_title:
+    $rstrips(hit.book_title, '.').
+
+$if hit.journal_title_abbreviation:
+    <span class="journal"><a href="$urlquote_plus('/search/journal=%s/' % hit.journal_title_abbreviation)">$hit.journal_title_abbreviation</a></span>.
+
+$if hit.volume:
+    $hit.volume
+    $cond(hit.issue, '(' + str(hit.issue) + ')', ''):\
+    $fix_pagination(hit.pagination)
+    (<span class="year"><a href="$urlquote_plus('/search/year=%s/' % hit.year)">$hit.year</a></span>)
+$else:
+    <span class="year"><a href="$urlquote_plus('/search/year=%s/' % hit.year)">$hit.year</a></span>
+
+<div></div>
+
+$if hit.mesh:
+    $ mesh = hit.mesh
+    <ul class="mesh">
+    $for me in mesh[:3]:
+        <li>
+        $for m in me.split('/'):
+            <a href="$urlquote_plus('/search/mesh=%s/' % lstrips(m, '*'))">$m</a>
+            $if not loop.last: /
+        </li>
+    $if len(mesh) > 3:
+        <li class="toggle_more" title="$(' - '.join(mesh[3:]))">more mesh ...</li>
+        <span class="more_less">
+        $for me in mesh[3:]:
+            <li>
+            $for m in me.split('/'):
+                <a href="$urlquote_plus('/search/mesh=%s/' % lstrips(m, '*'))">$m</a>
+                $if not loop.last: /
+            </li>
+        <li class="toggle_less" href="javascript:collapse($(hit.pmid)0, 'inline')" title="less mesh">less mesh</li>
+    </ul>
+    
+<div class="actions">
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/$hit.pmid" class="book">PMID: $hit.pmid</a>
+$if hit.pmc_id:
+    -
+    <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC$(hit.pmc_id)/" class="fft">Free full text</a>
+$if hit.citation_count:
+    -
+    <a href="$urlquote_plus('/search/cite=%s/' % hit.pmid)" class="cited">Cited <strong>$hit.citation_count time(s)</strong> on PMC</a>
+</div>

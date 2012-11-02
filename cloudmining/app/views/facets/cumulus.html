@@ -1,0 +1,15 @@
+$def with (facet)
+
+$ facet_json = json_encode(facet.results)
+<div class="cumulus">
+
+$# this will be replaced by flash
+$# visualization does not work without an id
+$ id = facet.name + '_cumulus'
+<div id="$id"></div>
+
+</div>
+
+<script>
+drawCumulus(\$('#$id')[0], $:facet_json);
+</script>

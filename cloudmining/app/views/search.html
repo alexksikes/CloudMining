@@ -1,0 +1,192 @@
+﻿$def with (query, hits, facets, pager, user_pref)
+
+$var title = config.instance_name + ' - ' + ' - '.join(q.term for q in query if q.status != '-')
+$var mode = 'search'
+
+$def show_sort_by():
+    $ c_mode = query_param('so', config.ui_sort_by[0])
+    <select name="so">
+    $for sort in config.ui_sort_by:
+        $ mode = sort['key']
+        $ name = sort['description']
+        <option value="$mode" $cond(c_mode == mode, 'selected="selected"', '')>$name</option>
+    </select>
+
+$def show_paging():
+    $if pager.left_a is not False:
+        <a href="$changequery(s=pager.left_a)"><img src="/img/document-page-previous.png"></a>
+
+    $if pager.leftmost_a is not False:
+        <a href="$changequery(s=pager.leftmost_a.start)">$pager.leftmost_a.number</a>
+
+    $if pager.pages[0].number > 2: ...
+
+    $for page in pager.pages:
+        $if page.number == pager.c_page:
+            <strong>$page.number</strong>
+        $else:
+            <a href="$changequery(s=page.start)">$page.number</a>
+
+    $if pager.pages[-1].number + 1 < pager.nb_pages: ...
+
+    $if pager.rightmost_a is not False:
+        <a href="$changequery(s=pager.rightmost_a.start)">$pager.rightmost_a.number</a>
+
+    $if pager.right_a is not False:
+        <a href="$changequery(s=pager.right_a)"><img src="/img/document-page-next.png"></a>
+
+$def show_query_term(query, qt, sim_query=None):
+    $ f, v = qt.user_field, qt.term
+
+    $ qo = query.GetQueryToggle(qt)
+    $ qr = query - qt
+
+    $if sim_query:
+        $ qs = sim_query + qt
+    $else:
+        $ qs = query & qt
+    $if qt.status == '-':
+        $ qs = qs.GetQueryToggle(qt)
+
+    $if f in config.ui_facets_dict:
+        $ title = qt.term
+        $ _class = f
+    $elif f == 'similar':
+        $ title = listget(qt.extra, 0, qt.item_id)
+        $ _class = 'similar'
+    $elif qt.sph_field == '*':
+        $ title = qt.term
+        $ _class = 'all'
+    $else:
+        $ title = '@%s %s' % (f, v)
+        $ _class = ''
+
+    $ img_src = '/img/ui-check-box.png'
+    $if qt.status == '-':
+        $ _class += ' disabled'
+        $ img_src = '/img/ui-check-box-uncheck.png'
+
+    <li $:cond(_class, 'class="%s"' % _class, '')>
+        <a href="/search/$qo.ToPrettyUrl()"><img src="$:img_src"></a>
+        <a title="Only select $title" href="/search/$qs.ToPrettyUrl()">
+        $title
+        </a>
+        <a title="Remove $title" href="/search/$qr.ToPrettyUrl()"><img src="/img/cross.png"></a>\
+    </li>
+
+<div class="content">
+
+<div class="search_bar">
+<h1>
+    <a href="/"><img src="/img/logo-small.png" alt="Cloud Mining - DBLP">
+    <span>$config.instance_name</span>
+    </a>
+</h1>
+<div class="search_form">
+<form method="get" action="/search/" name="search_form">
+    <input type="hidden" name="previous_query" id="query" value="$query.user">
+    <input type="hidden" name="query_inactive" value="$query.GetQueryFilter(lambda x: x.status == '-').user">
+    <input type="hidden" name="params" value="$url_encode2(get_inputs(debug=None))">
+    <input type="hidden" name="search_mode" value="all_items">
+    <div class="search_entry">
+        <input type="text" name="q" value="" autocomplete="off">
+    </div>
+    <input type="submit" value="GO" class="submit">
+    <span class="delim"></span>
+    <input type="submit" value="Add Keyword" class="submit add_keyword">
+</form>
+</div>
+</div>
+
+$if is_sim_query(query, is_active=False):
+    $ query = to_sim_query(query)
+    <div class="search_keywords search_similar">
+        <span class="select_remove">Looking for results similar to:
+        <a class="clear_similar" title="Clear Similar" href="/search/$query.GetQueryFilter(lambda x: x.user_field != 'similar').ToPrettyUrl()"><img src="/img/cross.png"></a>
+        </span>
+        <ul>
+        $for qt in query:
+            $if qt.user_field == 'similar':
+                $:show_query_term(query, qt)
+        </ul>
+    </div>
+
+$ sim_query = query.GetQueryFilter(lambda x: x.user_field == 'similar')
+$if query.GetQueryFilter(lambda x: x.user_field != 'similar'):
+    <div class="search_keywords">
+        Searching for:
+        <ul>
+        $for qt in query:
+            $if qt.user_field != 'similar':
+                $:show_query_term(query, qt, sim_query)
+        </ul>
+    </div>
+
+<div class="content_results_facets">
+
+<div class="content_results">
+<div class="action_bar">
+$if hits.total_found:
+    <div class="highlighter">
+        $ terms = '|'.join(qt.term for qt in query if qt.status != '-' and qt.user_field != 'similar')
+        $ terms_ = '|'.join(t for t in terms.split() if len(t) > 1)
+        $ terms = cond(terms_, terms+'|'+terms_, terms)
+        $ terms = terms.replace('.', '\.')
+        <input type="hidden" id="terms" value="$terms">
+        $if is_sim_query(query):
+            <input type="hidden" id="also_similar" value="true">
+        <span class="turned_off" title="Highlight search terms"></span>
+    </div>
+    <div class="nb_results">Found <strong>$commify(hits.total_found)</strong> results</div>
+    $ active_sim_query = sim_query.GetQueryFilter(lambda x: x.status == '')
+    $if not is_sim_query(query) or not active_sim_query:
+        $if config.ui_sort_by:
+            <div class="sort_by">
+            sorted by: $:show_sort_by()
+            </div>
+    $else:
+        <div class="sort_by similarity_sort">
+        sorted by:
+        <select name="so"><option value="sim">most similar</option></select>
+        </div>
+<div class="paging">
+$if pager.pages and len(pager.pages) > 1:
+    Pages: $:show_paging()
+</div>
+</div>
+
+<div class="results">
+$if not hits.total_found:
+    <div class="result"><span class="no_result">Oops we found <strong>no results</strong> for your query.
+    <p>Try to type some keywords or refine by the facets on your right.</p></span></div>
+$else:
+    $for match in hits.matches:
+        <div class="result $loop.parity $cond(loop.last, 'last', '')">
+        $if config.hit_template:
+            $:config.hit_template(match, query)
+        $else:
+            $:view.hit(match, query)
+        $if query_param('debug'):
+            $:view.debug(match, query)
+        </div>
+$if hits.total_found:
+    <div class="stats">
+    (search: $hits.time sec. - facets: $facets.time sec.\
+    $if hits.get('time_similarity') is not None:
+        - similarity: $('%.2f sec' % hits.time_similarity)\
+    )
+    </div>
+</div>
+
+<div class="paging">
+$if pager.pages and len(pager.pages) > 1:
+    Pages: $:show_paging()
+</div>
+</div>
+
+<div class="facets">
+$for facet in sort_facets(facets, config.ui_facets)
+    $:view.facets.layout(facet, user_pref)
+</div>
+</div>
+</div>

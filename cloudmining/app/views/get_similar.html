@@ -1,0 +1,31 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+$ id_field = config.ui_default_hit.id_field
+$ title_field = config.ui_default_hit.title_field
+
+$def get_sim_scores(match):
+    $if not match['attrs'].get('@sim_scores'):
+        $return
+    $ scores = match['attrs']['@sim_scores']['scores']
+    $ scores = [score for score in scores[0:7] if score[1]>=0]
+    $ sizes = normalize([score[1] for score in scores], start=7, end=15)
+    $ keywords = (score[0] for score in scores)
+    $return zip(keywords, sizes)
+
+$ q = query + '(@similar %s--%s)' % (hit.get(id_field), hit.get(title_field))
+
+<div class="actions_similar">
+    <a class="find_similar" href="/search$urlquote_plus('/similar=%s--%s/' % (hit.get(id_field), hit.get(title_field)))" title="Try adding this item to your search to find similar items">Similar</a> /
+    <a class="add_to_similar" href="/search/$q.ToPrettyUrl()">Add to query</a>
+</div>
+
+$ sim_scores = get_sim_scores(match)
+$if sim_scores:
+    <ul class="why_similar">
+    $for k, size in sim_scores:
+        <li>
+        <a style="font-size: $int(size)px" href="/search$urlquote_plus('/%s/' % k)" title="$k">$k</a>
+        $if not loop.last: /
+        </li>
+    </ul>

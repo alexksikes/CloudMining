@@ -1,0 +1,20 @@
+<style type="text/css">
+$for f in config.ui_facets:
+    $ facet_name = f['name']
+    $ color_name = f['color']['name']
+    $ background =  f['color']['background']
+    $ foreground = f['color']['foreground']
+
+    /* colors for $facet_name is $color_name */
+    .$facet_name a, .facet.$facet_name h4 strong {
+        color: $foreground;
+    }
+    .facet.$facet_name h4 {
+        background: url(/img/bullet_$(color_name).png) no-repeat left;
+    }
+    .facet.$facet_name .counts .bar_chart {
+        background-color: $background;
+        text-decoration: none;
+    }
+    /* end of colors for $facet_name */
+</style>

@@ -1,0 +1,18 @@
+$def with (match, query)
+
+$ hit = match['@hit']
+$ id_field = config.ui_default_hit.id_field
+$ title_field = config.ui_default_hit.title_field
+
+$#$ img_url = ''
+$#$if hit.get('cover_url'):
+$#	$ img_url = generate_md5(hit.cover_url)
+
+$#$ q = query + '(@similar %s--%s--%s)' % (hit.get('id'), hit.get('title'), img_url)
+
+$ q = query + '(@similar %s--%s)' % (hit.get(id_field), hit.get(title_field))
+
+<div class="get_similar">
+    <a class="button" href="/search/$q.ToPrettyUrl()" onclick="this.blur();" title="Try adding this item to your search to find similar items">
+    <span><img style="float:left; margin-right:5px;" src="/img/thumb-up.png"/>More of this!</span></a>
+</div>
