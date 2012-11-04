@@ -22,11 +22,11 @@ Execute application.py and aim your browser at http://localhost:8080:
 
 	python application.py
     
-For the IMDb instance, you obtain the following interface:
+On data from IMDb, you obtain the following interface:
 
 ![Cloud Mining Generic Interface](http://alex.ksikes.net/static/imdb.generic.png "Cloud Mining Generic Interface")
 
-After customization you get:
+And after customization, you get:
 
 ![Cloud Mining Customized Interface](http://alex.ksikes.net/static/imdb.customized.png "Cloud Mining Customized Interface")
 
@@ -39,8 +39,8 @@ for the icons. Rose diagram thanks to [RGraph][8].
 [0]: http://sphinxsearch.com/
 [1]: https://github.com/alexksikes/fSphinx/
 [2]: https://github.com/alexksikes/SimSearch/
-[3]: https://github.com/alexksikes/cloudmining/cloudmining/api.py
-[4]: https://github.com/alexksikes/cloudmining/examples/
+[3]: https://github.com/alexksikes/CloudMining/blob/master/cloudmining/api.py
+[4]: https://github.com/alexksikes/CloudMining/tree/master/examples
 [5]: http://reallysimpleworks.com/
 [6]: http://www.famfamfam.com/lab/icons/silk/
 [7]: http://p.yusukekamiyamane.com/

@@ -12,7 +12,7 @@ Download and extract the latest Cloud Mining tarball:
     wget http://github.com/alexksikes/cloudmining/tarball/master
     tar xvzf "the tar ball"
     
-Add Cloud Mining to your PYTHONPATH:
+Add the Cloud Mining package to your PYTHONPATH:
 
     export PYTHONPATH=$PYTHONPATH:/path/to/cloudmining/cloudmining
 
@@ -30,4 +30,4 @@ What's next? Have a look into some [instances][6] provided to learn how to use.
 [3]: http://webpy.org/install
 [4]: https://github.com/alexksikes/fSphinx/
 [5]: https://github.com/alexksikes/SimSearch/
-[6]: https://github.com/alexksikes/cloudmining/examples/
+[6]: https://github.com/alexksikes/CloudMining/tree/master/examples

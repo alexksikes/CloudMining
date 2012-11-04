@@ -19,12 +19,12 @@ The sames instances but running on the full datasets are available online:
 [0]: http://www.informatik.uni-trier.de/~ley/db/
 [1]: http://www.imdb.com/
 [2]: http://www.ncbi.nlm.nih.gov/pubmed
-[3]: https://github.com/alexksikes/cloudmining/examples/dblp/
-[4]: https://github.com/alexksikes/cloudmining/examples/imdb/
-[5]: https://github.com/alexksikes/cloudmining/examples/medline/
-[6]: https://github.com/alexksikes/scraping/
+[3]: https://github.com/alexksikes/CloudMining/tree/master/examples/dblp
+[4]: https://github.com/alexksikes/CloudMining/tree/master/examples/imdb
+[5]: https://github.com/alexksikes/CloudMining/tree/master/examples/medline
+[6]: https://github.com/alexksikes/CloudMining/tree/master/scraping
 [7]: http://citeseerx.ist.psu.edu/index
-[8]: https://github.com/alexksikes/cloudmining/examples/INSTALL.md
+[8]: https://github.com/alexksikes/CloudMining/blob/master/examples/INSTALL.md
 
 [_1]: http://dblp.cloudmining.net
 [_2]: http://imdb.cloudmining.net

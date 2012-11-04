@@ -5,7 +5,7 @@ from the [IMDb][4] website using [Mass Scrapping][1]. The MEDLINE dataset was
 downloaded from the [Pubmed][5] website using [Mass Scraping][1] and augmented
 with citation information from [PudMed Central][6].
 
-[0]: https://github.com/alexksikes/cloudmining/examples/
+[0]: https://github.com/alexksikes/CloudMining/tree/master/examples
 [1]: https://github.com/alexksikes/mass-scraping
 [2]: http://dblp.l3s.de/dblp++.php
 [3]: http://citeseerx.ist.psu.edu/index

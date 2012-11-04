@@ -22,13 +22,6 @@ li {
     list-style: none;
     display: inline;
 }
-
-select {
-    cursor: pointer;
-    height: 21px;
-    border: 1px solid #D1D6DF;
-    width: 180px;
-}
 /* reset defaults */
 
 /* header bar */
@@ -71,6 +64,13 @@ select {
     margin: 0;
     padding: 0;
     border: none;
+}
+
+.header select.other_instances {
+    cursor: pointer;
+    height: 21px;
+    border: 1px solid #D1D6DF;
+    width: 180px;
 }
 /* header bar */
 
