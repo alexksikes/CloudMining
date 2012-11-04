@@ -1,9 +1,8 @@
-Cloud Mining is a web interface for the [Sphinx][0] search engine. It is aimed
-at encouraging nonlinear search and data exploration. It makes use of the
-[fSphinx][1] module for faceted search. [SimSearch][2] is used for item based
-search. The facets support different visualizations such as tag clouds,
-histogram counts, a rose diagram. Other visualizations can be provided as
-plugins.
+Cloud Mining is a faceted search user interface for [Sphinx][0]. It is aimed at
+nonlinear search and data exploration. It makes use of the [fSphinx][1] module
+for faceted search. [SimSearch][2] is used for item based search. The facets
+support different visualizations such as tag clouds, histogram counts and a rose
+diagram. Other visualizations can be provided as plugins.
 
 Create a file called application.py with the following lines:
 
