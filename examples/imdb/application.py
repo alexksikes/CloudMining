@@ -17,8 +17,8 @@ app.set_ui_sort_by(
 app.set_ui_facets(
     dict(name='year', color='purple', collapsed=True, visualization='rose'),
     dict(name='genre', color='green', visualization='counts'),
-    dict(name='keyword', collapsed=True, color='black'),
-    dict(name='director', color='blue'),
+    dict(name='keyword', color='black', visualization='counts'),
+    dict(name='director', color='blue', visualization='counts'),
     dict(name='actor', color='red', visualization='counts'),
 )
 

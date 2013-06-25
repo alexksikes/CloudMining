@@ -121,6 +121,12 @@ function setUserPrefs(name, value) {
     $.cookie('user_pref', JSON.stringify(prefs), {path: '/'});
 }
 
+/* toggle a boolean in user pref cookie */
+function toggleUserPrefs(name) {
+    var value = !(getUserPrefs()[name]);
+    setUserPrefs(name, value);
+}
+
 /* highlight search terms */
 function highlightKeywords() {
     var pattern = $('.highlighter input').attr('value');
@@ -158,6 +164,11 @@ $('.highlighter').click(function(){
     var also_similar = $('.highlighter #also_similar');
     var on = toggle.hasClass('turned_off');
     setHighlighting(on, also_similar);
+});
+
+/* debug search */
+$('.toggle_debug_search').click(function(){
+    toggleUserPrefs('debug');
 });
 
 /* sort by */

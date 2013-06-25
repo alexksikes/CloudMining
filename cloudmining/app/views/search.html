@@ -86,7 +86,6 @@ $def show_query_term(query, qt, sim_query=None):
 <form method="get" action="/search/" name="search_form">
     <input type="hidden" name="previous_query" id="query" value="$query.user">
     <input type="hidden" name="query_inactive" value="$query.GetQueryFilter(lambda x: x.status == '-').user">
-    <input type="hidden" name="params" value="$url_encode2(get_inputs(debug=None))">
     <input type="hidden" name="search_mode" value="all_items">
     <div class="search_entry">
         <input type="text" name="q" value="" autocomplete="off">
@@ -166,7 +165,7 @@ $else:
             $:config.hit_template(match, query)
         $else:
             $:view.hit(match, query)
-        $if query_param('debug'):
+        $if user_pref['debug']:
             $:view.debug(match, query)
         </div>
 $if hits.total_found:
@@ -175,6 +174,7 @@ $if hits.total_found:
     $if hits.get('time_similarity') is not None:
         - similarity: $('%.2f sec' % hits.time_similarity)\
     )
+    (<a href="" class="toggle_debug_search" title="Toggle debug search">?</a>)
     </div>
 </div>
 

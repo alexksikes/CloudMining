@@ -12,12 +12,10 @@ cl = simsearch.SimClient(
 # custom sorting function for the search
 # we always make sure highly ranked items with a log score are at the top.
 cl.SetSortMode(sphinxapi.SPH_SORT_EXPR, '''
-if (log_score_attr > 1 and user_rating_attr > 0.65 and nb_votes_attr > 100,
-    log_score_attr * 100000,
-    if (log_score_attr > 1 and user_rating_attr > 0.5 and nb_votes_attr > 100,
-        log_score_attr * 100,
-        @weight * user_rating_attr * nb_votes_attr * year_attr / 100000)
-    )'''
+if (log_score_attr > 0 and user_rating_attr > 0.5 and nb_votes_attr > 100,
+    log_score_attr,
+    (@weight * user_rating_attr * nb_votes_attr) - 1000000000000
+)'''
 )
 
 # custom grouping function for the facets
@@ -25,7 +23,7 @@ if (log_score_attr > 1 and user_rating_attr > 0.65 and nb_votes_attr > 100,
 # appear but are at the bottom.
 group_func = '''
 sum(
-    if (log_score_attr > 1,
+    if (log_score_attr > 0,
         if (runtime_attr > 45,
             if (nb_votes_attr > 1000,
                 if (nb_votes_attr < 10000, nb_votes_attr * user_rating_attr, 10000 * user_rating_attr),

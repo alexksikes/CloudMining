@@ -109,14 +109,18 @@ $if hit.plot:
     <p class="plot">$hit.plot.strip('|') <a href="http://www.imdb.com/title/tt$hit.id/plotsummary">full story on IMDb</a></p>
 
 $if hit.keyword:
-    $if match['attrs'].get('@sim_scores') and match['attrs']['@sim_scores']['scores'][0][1] > 0:
-        <ul class="keyword sim_scores">
+    $if match['attrs'].get('@sim_scores') and match['attrs']['@sim_scores']['scores']:
         $ keywords = [v[0] for v in match['attrs']['@sim_scores']['scores'] if v[1] > 0]
+    $else:
+        $ keywords = []
+    
+    $if keywords:
+        <ul class="keyword sim_scores">
         <li class="first"></li>
     $else:
         <ul class="keyword">
         $ keywords = hit.keyword
-
+    
     $for k in keywords[0:5]:
         <li><a href="$urlquote_plus('/search/keyword=%s/' % k)">$k</a>
         $if not loop.last: /

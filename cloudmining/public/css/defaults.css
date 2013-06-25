@@ -617,6 +617,15 @@ div.more {
     clear: both;
 }
 
+.toggle_debug_search {
+    text-decoration: none;
+    color: gray;
+}
+
+.toggle_debug_search:hover {
+    text-decoration: underline;    
+}
+
 /* debug mode */
 
 /* specific to certain pages */

@@ -36,7 +36,7 @@ class search:
 class search_url:
     def GET(self, path):
         # get variables including the user preferences
-        i = web.input(s=0, so='', debug=False, ot='')
+        i = web.input(s=0, so='', ot='')
         start = int(i.s)
         pref = user_pref.get()
         # transform pretty url path into a query

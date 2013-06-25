@@ -1,5 +1,5 @@
 ﻿# this is for me, do not use!
-# sql file that was used to build the test database from the real IMDb database
+# sql file that was used to build the test database from the real DBLP database
 
 # let's get the most cited articles on dblp
 create table dblp_sample.pub like dblp.pub;

@@ -9,10 +9,8 @@ $ other_instances = ('DBLP', 'CompSci', 'http://dblp.cloudmining.net', 'IMDb', '
         <li><a href="/directory/">Directory</a></li>
     <li class="last">
         <select class="other_instances">
-        <option value="">Try other instances:</option>
         $for name, desc, url in group(other_instances, 3):
-            $if name != config.instance_name:
-                <option value="$url">$name - $desc</option>
+            <option value="$url" $cond(name == config.instance_name, "selected", "")>$name - $desc</option>
         </select>
     </li>
     </ul>

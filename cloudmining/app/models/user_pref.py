@@ -23,7 +23,8 @@ def get_default(as_module=True):
         'highlighing': False,
         'sort_by': '',
         'selected_visu': {},
-        'collapsed': {}
+        'collapsed': {}, 
+        'debug': False
     }
     for f in web.config.ui_facets:
         defaults['selected_visu'][f.name] = f.visualization
