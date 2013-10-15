@@ -45,7 +45,7 @@ app.set_ui_facets(
 # instance name and description which appears in the front page
 app.set_ui_instance(
     instance_name='DBLP', 
-    description='''<p>Search over 1.7M <strong>computer science publications</strong> from <a href="http://dblp.uni-trier.de/db">DBLP</a>
+    description='''<p>Search over 2.4M <strong>computer science publications</strong> from <a href="http://dblp.uni-trier.de/db">DBLP</a>
     enhanced with <a href="http://citeseerx.ist.psu.edu/">CiteSeerX</a>.</p>'''
 )
 

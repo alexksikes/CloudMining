@@ -1,8 +1,11 @@
 # Author Alex Ksikes
-import sets, string, re
+
+import sets
+import string
+import re
 
 class StopListTagger:
-    def __init__(self, stop_words='./stop_words.txt', freq_list=''):
+    def __init__(self, stop_words='./stopwords.txt', freq_list=''):
         self.stop_words = sets.Set([word.lower().strip() for word in open(stop_words)])
         self.min_length = 3
         

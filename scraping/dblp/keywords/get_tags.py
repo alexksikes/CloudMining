@@ -1,18 +1,34 @@
 # Author: Alex Ksikes
 
-# Note:
-# run python scripts/get_tags.py scripts/stopwords.txt pub title &
-# cut -f 1,3 tag_freqs.txt > freqs.txt
-# python scripts/get_tags.py scripts/stopwords.txt pub title freqs.txt&
+'''
+To use you need to set some environ variables for the database parameters:
 
-import sys; sys.path.insert(0, '.')
+    export dbn=mysql db=database user=user passwd=passwd
+
+Generate the tags as such:
+
+    python get_tags.py stopwords.txt pub title &
+    cut -f 1,3 tag_freqs.txt > freqs.txt
+    python get_tags.py stopwords.txt pub title freqs.txt &
+
+Don't forget to clean up:
+    
+    unset dbn db user passwd
+'''
+
+import sys
+import os
 
 import web
-from config import db
-
 from tagger import StopListTagger
 
+def get_db_params_from_env():
+    return dict((k, v) for k, v in os.environ.items() 
+        if k in ('dbn', 'db', 'user', 'passwd'))
+
 def run(stop_words, table, field, freq_list=''):
+    db = web.database(**get_db_params_from_env())
+    
     tag_ids = {}; tag_counts = {}
     
     out = open('tag_%s_%s.txt' % (table, field), 'w')

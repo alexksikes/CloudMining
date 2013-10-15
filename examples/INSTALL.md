@@ -21,7 +21,7 @@ We assume that the current working directory is {instance_name}/ where
     
 5) And let searchd serve the index:
 
-    /path/to/sphinx/indexer -c ./config/sphinx_indexer.cfg
+    /path/to/sphinx/searchd -c ./config/sphinx_indexer.cfg
 
 6) Let simsearch index the features (only for IMDb and DBLP):
 
